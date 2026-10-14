@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Beilul's Piano</title>
+
+  <!-- Nice font (the page still works without internet) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Link to our CSS file -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ===== HEADER ===== -->
+  <header class="header">
+    <h1>BEILUL'S PIANO</h1>
+    <p class="subtitle">Play music with your keyboard</p>
+    <p class="instruction">Press <kbd>A</kbd> <kbd>S</kbd> <kbd>D</kbd> <kbd>F</kbd> <kbd>G</kbd> <kbd>H</kbd> <kbd>J</kbd> <kbd>K</kbd> to play</p>
+  </header>
+
+  <main class="container">
+
+    <!-- ===== NOW PLAYING + SOUND SELECTOR ===== -->
+    <section class="card top-row">
+      <div class="now-playing">
+        <span class="label">NOW PLAYING</span>
+        <span class="note-display" id="now-playing-note">—</span>
+      </div>
+
+      <div class="sound-picker">
+        <label class="label" for="sound-select">SOUND</label>
+        <select id="sound-select">
+          <option value="piano">Piano</option>
+          <option value="soft">Soft</option>
+          <option value="organ">Organ</option>
+          <option value="synth">Synth</option>
+        </select>
+      </div>
+    </section>
+
+    <!-- ===== THE PIANO ===== -->
+    <section class="card piano-card">
+      <!-- One .piano box holds all the keys. Each key remembers its letter in data-key. -->
+      <div class="piano">
+
+        <!-- 8 white keys (the assignment keys) -->
+        <div class="key white-key" data-key="a"><span class="note-name">C</span><span class="solfege">Do</span><kbd>A</kbd></div>
+        <div class="key white-key" data-key="s"><span class="note-name">D</span><span class="solfege">Re</span><kbd>S</kbd></div>
+        <div class="key white-key" data-key="d"><span class="note-name">E</span><span class="solfege">Mi</span><kbd>D</kbd></div>
+        <div class="key white-key" data-key="f"><span class="note-name">F</span><span class="solfege">Fa</span><kbd>F</kbd></div>
+        <div class="key white-key" data-key="g"><span class="note-name">G</span><span class="solfege">Sol</span><kbd>G</kbd></div>
+        <div class="key white-key" data-key="h"><span class="note-name">A</span><span class="solfege">La</span><kbd>H</kbd></div>
+        <div class="key white-key" data-key="j"><span class="note-name">B</span><span class="solfege">Ti</span><kbd>J</kbd></div>
+        <div class="key white-key" data-key="k"><span class="note-name">C</span><span class="solfege">Do</span><kbd>K</kbd></div>
+
+        <!-- 5 black keys (bonus). --pos is where the key sits across the piano -->
+        <div class="key black-key" data-key="w" style="--pos: 12.5%"><span class="note-name">C#</span><kbd>W</kbd></div>
+        <div class="key black-key" data-key="e" style="--pos: 25%"><span class="note-name">D#</span><kbd>E</kbd></div>
+        <div class="key black-key" data-key="t" style="--pos: 50%"><span class="note-name">F#</span><kbd>T</kbd></div>
+        <div class="key black-key" data-key="y" style="--pos: 62.5%"><span class="note-name">G#</span><kbd>Y</kbd></div>
+        <div class="key black-key" data-key="u" style="--pos: 75%"><span class="note-name">A#</span><kbd>U</kbd></div>
+
+      </div>
+    </section>
+
+    <!-- ===== SONG MODE ===== -->
+    <section class="card song-card">
+      <h2>Song Mode</h2>
+      <p class="muted">Pick a song, then follow the glowing dot on the piano, or press Play Song to hear it.</p>
+
+      <div class="song-buttons">
+        <button class="song-btn" data-song="twinkle">Twinkle Twinkle</button>
+        <button class="song-btn" data-song="ode">Ode to Joy</button>
+        <button class="song-btn" data-song="jingle">Jingle Bells</button>
+      </div>
+
+      <h3 id="song-title">Twinkle Twinkle Little Star</h3>
+      <div class="sequence" id="song-sequence"></div>
+      <p class="song-status" id="song-status"></p>
+
+      <div class="song-controls">
+        <button class="control-btn play" id="play-song">▶ Play Song</button>
+        <button class="control-btn stop" id="stop-song">■ Stop / Reset</button>
+      </div>
+    </section>
+
+    <!-- ===== HOW TO PLAY + ABOUT ===== -->
+    <section class="info-row">
+      <div class="card">
+        <h2>How to Play</h2>
+        <ul>
+          <li>The <kbd>A</kbd>–<kbd>K</kbd> keys play the white piano keys.</li>
+          <li><kbd>W</kbd> <kbd>E</kbd> <kbd>T</kbd> <kbd>Y</kbd> <kbd>U</kbd> play the black keys (sharp notes).</li>
+          <li>You can also click (or tap) the piano keys.</li>
+          <li>Choose a sound from the dropdown.</li>
+          <li>Select a song and follow the sequence.</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h2>About This Project</h2>
+        <p>
+          This project demonstrates JavaScript <strong>event listeners</strong>.
+          The page listens for <code>keydown</code> and <code>keyup</code> events,
+          finds the matching piano key with <code>querySelector</code>, and uses
+          <code>classList</code> to light it up. The sounds are made with the Web Audio API.
+        </p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">Made by Beilul · HTML, CSS &amp; JavaScript</footer>
+
+  <!-- Link to our JavaScript file (at the bottom so the page loads first) -->
+  <script src="script.js"></script>
+</body>
+</html>

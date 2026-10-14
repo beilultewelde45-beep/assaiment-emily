@@ -1,0 +1,459 @@
+/* ===== BASIC RESET ===== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ===== COLORS (easy to change here) ===== */
+:root {
+  --bg: #0b1020;
+  --card: rgba(255, 255, 255, 0.05);
+  --card-border: rgba(255, 255, 255, 0.09);
+  --text: #e8ecff;
+  --muted: #9aa5d1;
+  --blue: #6c8cff;
+  --purple: #8b5cf6;
+}
+
+body {
+  font-family: "Poppins", "Segoe UI", Arial, sans-serif;
+  color: var(--text);
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 15% 10%, rgba(108, 140, 255, 0.22), transparent 40%),
+    radial-gradient(circle at 85% 20%, rgba(139, 92, 246, 0.20), transparent 40%),
+    var(--bg);
+  padding: 24px 16px;
+}
+
+/* ===== HEADER ===== */
+.header {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.header h1 {
+  font-size: clamp(2rem, 6vw, 3.4rem);
+  letter-spacing: 4px;
+  background: linear-gradient(90deg, #ffffff, var(--blue), var(--purple));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.subtitle {
+  color: var(--muted);
+  font-weight: 300;
+  font-size: 1.1rem;
+  margin-top: 4px;
+}
+
+.instruction {
+  margin-top: 14px;
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+
+/* little keyboard-button look used everywhere */
+kbd {
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 0.8rem;
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: var(--text);
+}
+
+/* ===== LAYOUT + CARDS ===== */
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: 20px;
+  padding: 22px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(8px);
+}
+
+.card h2 {
+  font-size: 1.2rem;
+  margin-bottom: 8px;
+}
+
+.muted {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.label {
+  display: block;
+  font-size: 0.7rem;
+  letter-spacing: 3px;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+/* ===== NOW PLAYING + SOUND ===== */
+.top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.note-display {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #ffffff;
+  text-shadow: 0 0 18px var(--blue);
+}
+
+select {
+  font-family: inherit;
+  font-size: 1rem;
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  padding: 10px 14px;
+  cursor: pointer;
+}
+
+select option {
+  color: #111;
+}
+
+/* ===== THE PIANO ===== */
+.piano-card {
+  padding: 28px 22px 34px;
+}
+
+/* The piano box. position: relative lets the black keys sit on top of it. */
+.piano {
+  position: relative;
+  display: flex;
+  height: 280px;
+}
+
+/* Shared style for every key */
+.key {
+  position: relative;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  transition: transform 0.08s ease, background 0.08s ease, box-shadow 0.08s ease;
+}
+
+/* WHITE KEYS */
+.white-key {
+  flex: 1;
+  background: linear-gradient(180deg, #ffffff 0%, #eef1fa 100%);
+  border: 1px solid #c4cce2;
+  border-left: none;
+  border-radius: 0 0 12px 12px;
+  color: #1b2340;
+  padding-bottom: 18px;
+  box-shadow: 0 6px 0 #aab4d4, 0 12px 20px rgba(0, 0, 0, 0.4);
+}
+
+.white-key:first-child {
+  border-left: 1px solid #c4cce2;
+}
+
+.white-key .note-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.white-key .solfege {
+  font-size: 0.8rem;
+  color: #5b668f;
+  margin-bottom: 10px;
+}
+
+.white-key kbd {
+  background: #e3e8f7;
+  border-color: #c4cce2;
+  color: #1b2340;
+}
+
+/* BLACK KEYS: sit on top, positioned using the --pos value from the HTML */
+.black-key {
+  position: absolute;
+  top: 0;
+  left: calc(var(--pos) - 4%);
+  width: 8%;
+  height: 62%;
+  z-index: 2;
+  background: linear-gradient(180deg, #2c3252 0%, #0a0d1c 100%);
+  border-radius: 0 0 8px 8px;
+  color: #aab3ff;
+  padding-bottom: 10px;
+  box-shadow: 0 5px 0 #04050d, 0 10px 14px rgba(0, 0, 0, 0.6);
+}
+
+.black-key .note-name {
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.black-key kbd {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+}
+
+/* ===== THE .active STYLE (key is pressed) ===== */
+.white-key.active {
+  background: linear-gradient(180deg, #c9d4ff 0%, #8fa4ff 100%);
+  transform: translateY(5px);
+  box-shadow: 0 1px 0 #7d8fd6, 0 0 32px rgba(108, 140, 255, 0.9);
+}
+
+.black-key.active {
+  background: linear-gradient(180deg, #8b5cf6 0%, #3b2fb5 100%);
+  transform: translateY(4px);
+  box-shadow: 0 1px 0 #1c1566, 0 0 28px rgba(139, 92, 246, 0.95);
+}
+
+/* Little glowing dot that shows which key to press next in a song */
+.key.next-hint::after {
+  content: "";
+  position: absolute;
+  top: 14px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--blue);
+  box-shadow: 0 0 14px var(--blue);
+  animation: blink 1s infinite;
+}
+
+.black-key.next-hint::after {
+  top: 10px;
+  background: #c4b5fd;
+  box-shadow: 0 0 14px #a78bfa;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: 0.3; transform: scale(0.7); }
+}
+
+/* ===== SONG MODE ===== */
+.song-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 16px 0;
+}
+
+.song-btn {
+  font-family: inherit;
+  font-size: 0.95rem;
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid var(--card-border);
+  border-radius: 999px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.song-btn:hover {
+  background: rgba(108, 140, 255, 0.25);
+}
+
+.song-btn.selected {
+  background: linear-gradient(90deg, var(--blue), var(--purple));
+  border-color: transparent;
+  box-shadow: 0 0 18px rgba(139, 92, 246, 0.6);
+}
+
+#song-title {
+  font-size: 1.05rem;
+  margin-bottom: 10px;
+}
+
+.sequence {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.chip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 44px;
+  padding: 6px 8px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid var(--card-border);
+  font-weight: 700;
+  transition: all 0.15s ease;
+}
+
+.chip small {
+  font-size: 0.65rem;
+  font-weight: 400;
+  color: var(--muted);
+}
+
+.chip.done {
+  opacity: 0.4;
+}
+
+.chip.current {
+  background: linear-gradient(180deg, var(--blue), var(--purple));
+  box-shadow: 0 0 16px rgba(108, 140, 255, 0.8);
+  transform: translateY(-3px);
+}
+
+.chip.current small {
+  color: #ffffff;
+}
+
+.song-status {
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin-bottom: 14px;
+  min-height: 1.4em;
+}
+
+.song-controls {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.control-btn {
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #ffffff;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 22px;
+  cursor: pointer;
+  transition: transform 0.1s ease, box-shadow 0.2s ease;
+}
+
+.control-btn:active {
+  transform: translateY(2px);
+}
+
+.control-btn.play {
+  background: linear-gradient(90deg, var(--blue), var(--purple));
+  box-shadow: 0 6px 18px rgba(108, 140, 255, 0.4);
+}
+
+.control-btn.stop {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--card-border);
+}
+
+/* ===== INFO SECTION ===== */
+.info-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.info-row ul {
+  list-style: none;
+}
+
+.info-row li {
+  color: var(--muted);
+  font-size: 0.92rem;
+  padding: 6px 0;
+  line-height: 1.5;
+}
+
+.info-row p {
+  color: var(--muted);
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+code {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 1px 6px;
+  border-radius: 5px;
+  color: #c4b5fd;
+  font-size: 0.85em;
+}
+
+.footer {
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.8rem;
+  margin-top: 30px;
+}
+
+/* ===== PHONES AND SMALL SCREENS ===== */
+@media (max-width: 700px) {
+  .info-row {
+    grid-template-columns: 1fr;
+  }
+
+  .top-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 600px) {
+  .card {
+    padding: 16px;
+  }
+
+  .piano-card {
+    padding: 16px 10px 24px;
+  }
+
+  .piano {
+    height: 210px;
+  }
+
+  .white-key {
+    padding-bottom: 10px;
+  }
+
+  .white-key .note-name {
+    font-size: 1.05rem;
+  }
+
+  .white-key .solfege {
+    font-size: 0.6rem;
+    margin-bottom: 6px;
+  }
+
+  .key kbd {
+    font-size: 0.65rem;
+    padding: 1px 5px;
+  }
+
+  .black-key .note-name {
+    display: none;
+  }
+}
